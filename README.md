@@ -1,4 +1,4 @@
-# New Dependency Inject - NatureDI</br>
+# New Dependency Injection - NatureDI</br>
 
 ## NatureDI Architecture
 ### Components
@@ -22,12 +22,14 @@ This DI architecture contains components below:
  This is **not a good strategy**. Because time is tight and we don't get a good solution right now, so we need others to support us a better strategy
  
 ## Limitation
-- Currently, we only support dependency by object ID **NOT** by type.
+- Currently, we only support dependency by `object name`  **NOT** `by type`.
+- To inject dependencies, user must define a constructor of all dependencies. Otherwise, the dependencies won't be injected. NatureDI only supports `constructor injection`.
+- We don't support constructor overloading.
+- User must define all object as well as its dependency to `NatureApplication` rather than annotating object with annotation. 
+- List of dependency is name of another object in NatureDI. To understand more, go to [How to use it](#user-content-how-to-use-it)
 - We create all objects with recursion. *In worst case, each object is dependency of another (E.g: A -> B -> C -> D....), an StackOverflowException will be throw.*
 The proposal to solve this problem, you can take a look at [here](#user-content-proposal-of-next-version)
-- There's a constructor injection. The constructor must have all dependencies as method paramters.
-- We don't support overloading constructors
-- User must define all object as well as its dependency to `NatureApplication` rather than annotating object with annotation. We need support from community ;).
+- We need support from community to make it better day by day ;).
 
 
 # How to use it
@@ -67,10 +69,12 @@ public class Person {
 To use NatureDI, you need to declare all possible object is scanned by NatureDI by using `NatureApplicationBuilder`.</br>
 In this example, Andy and his mother use same car.
 ```java
- final NatureApplication app = new NatureApplicationBuilder().declare("tyre", Tyre.class, ObjectScope.PROTOTYPE)
+ final NatureApplication app = new NatureApplicationBuilder()
+                .declare("tyre", Tyre.class, ObjectScope.PROTOTYPE)
                 .declare("car1", Car.class, "tyre", "tyre", "tyre", "tyre")
                 .declare("andy", Person.class, "car1")
-                .declare("motherOfAndy", Person.class, "car1").build();
+                .declare("motherOfAndy", Person.class, "car1")
+                .build();
 
         app.start();
 

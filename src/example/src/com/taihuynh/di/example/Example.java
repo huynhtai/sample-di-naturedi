@@ -8,18 +8,20 @@ import java.util.Optional;
 
 public class Example {
     public static void main(String[] args) {
-        final NatureApplication app = new NatureApplicationBuilder().declare("tyre", Tyre.class, ObjectScope.PROTOTYPE)
+        final NatureApplication app = new NatureApplicationBuilder()
+                .declare("tyre", Tyre.class, ObjectScope.PROTOTYPE)
                 .declare("car1", Car.class, "tyre", "tyre", "tyre", "tyre")
                 .declare("andy", Person.class, "car1")
-                .declare("motherOfAndy", Person.class, "car1").build();
+                .declare("motherOfAndy", Person.class, "car1")
+                .build();
 
         app.start();
 
-        Optional<Object> andy =  app.getObjectById("andy");
-        Optional<Object> motherOfAndy = app.getObjectById("motherOfAndy");
+        final Optional<Object> andy = app.getObjectById("andy");
+        final Optional<Object> motherOfAndy = app.getObjectById("motherOfAndy");
 
-        final Car andyCar = ((Person)andy.get()).getCar();
-        final Car andyMotherCar = ((Person)motherOfAndy.get()).getCar();
+        final Car andyCar = ((Person) andy.get()).getCar();
+        final Car andyMotherCar = ((Person) motherOfAndy.get()).getCar();
 
         System.out.println("Andy car: " + andyCar);
         System.out.println("Andy's mother car: " + andyMotherCar);
