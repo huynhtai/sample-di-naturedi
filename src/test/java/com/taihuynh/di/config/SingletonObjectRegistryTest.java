@@ -47,8 +47,8 @@ public class SingletonObjectRegistryTest {
         Object expectedObj = new Object();
         Supplier<Optional<Object>> newInstanceSupplier = Mockito.mock(Supplier.class);
         Mockito.when(newInstanceSupplier.get()).thenReturn(Optional.of(expectedObj));
-
         singletonObjectRegistry.getSingletonObject("a", newInstanceSupplier);
+
         final Optional<Object> singletonObj = singletonObjectRegistry.getSingletonObject("a", newInstanceSupplier);
 
         assertEquals(expectedObj, singletonObj.get());
